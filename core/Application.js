@@ -129,7 +129,7 @@ class Application extends Event {
     }
 
     /**
-     * handler request
+     * handle request
      *
      * @param {any} request
      * @param {any} response
