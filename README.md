@@ -1,7 +1,5 @@
 # 一个面向对象的高效 node.js mvc and REST 框架
 
-# [English Readme](./README_EN.md)
-
 ### Node 版本
 
 + 大于等于 8.0.0
