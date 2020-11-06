@@ -69,11 +69,11 @@ class Application extends CoreApp {
         let pos = ret.handler.indexOf(Application.separator);
         let obj = null;
         if(-1 === pos) {
-            obj = Fate.createObject(ret.handler);
+            obj = Fate.createObjectAsString(ret.handler);
             obj.run(request, response, ret.parameters);
 
         } else {
-            obj = Fate.createObject( ret.handler.substring(0, pos) );
+            obj = Fate.createObjectAsString( ret.handler.substring(0, pos) );
             obj[ ret.handler.substring(pos + 1) ](request, response, ret.parameters);
         }
     }
