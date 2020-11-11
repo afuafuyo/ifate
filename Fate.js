@@ -23,10 +23,10 @@ class Fate {
         // 截取开头作为别名
         let pos = alias.indexOf('/');
         let root = -1 === pos ? alias : alias.substring(0, pos);
-        if(undefined !== Fate.pathAliases[root]) {
+        if(Fate.pathAliases.has(root)) {
             return -1 === pos
-                ? Fate.pathAliases[root]
-                : Fate.pathAliases[root] + alias.substring(pos);
+                ? Fate.pathAliases.get(root)
+                : Fate.pathAliases.get(root) + alias.substring(pos);
         }
 
         return '';
@@ -43,17 +43,11 @@ class Fate {
             alias = '@' + alias;
         }
 
-        if(null === path) {
-            delete Fate.pathAliases[alias];
-
-            return;
-        }
-
         if('/' === path.charAt(path.length - 1)) {
             path = path.substring(0, path.length - 1);
         }
 
-        Fate.pathAliases[alias] = path;
+        Fate.pathAliases.set(alias, path);
     }
 
     /**
@@ -66,7 +60,7 @@ class Fate {
             alias = '@' + alias;
         }
 
-        delete Fate.pathAliases[alias];
+        Fate.pathAliases.delete(alias);
     }
 
     /**
@@ -160,7 +154,7 @@ Fate.app = null;
 /**
  * @property {Map<String, String>} pathAliases 路径别名
  */
-Fate.pathAliases = {'@fate': __dirname};
+Fate.pathAliases = new Map([ ['@fate', __dirname] ]);
 
 /**
  * @property {String} defaultExtension 默认文件扩展名
