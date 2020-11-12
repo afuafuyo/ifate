@@ -24,6 +24,7 @@ class Headers {
 
         return {
             next: () => {
+                // compare first
                 if(index++ < this.headers.size) {
                     let key = keysIterator.next().value;
 
