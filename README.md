@@ -2,7 +2,7 @@
 
 ### Node 版本
 
-+ 大于等于 8.0.0
+8.0.0 及以上
 
 ### 源码 source code
 
@@ -49,8 +49,11 @@ new IFate(app).listen(8090, function(){
 ### 系统内置别名
 
 + @fate  系统目录
+
 + @app  项目目录 由 appPath 指定 `Fate.app.getAppPath()` 可得到该值
+
 + @runtime  缓存目录 默认指向 @app/runtime `Fate.app.getRuntimePath()` 可得到该值
+
 + @root  网站根目录 `Fate.app.getRootPath()` 可得到该值
 
 ### 项目目录示例
