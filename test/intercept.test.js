@@ -20,7 +20,7 @@ const app = new Application({
 const server = new IFate(app).getServer();
 
 // test
-describe('interceptRoutes', function() {
+describe('intercept routes', function() {
     it('a route', function(done) {
         request(server)
             .get('/aroute')

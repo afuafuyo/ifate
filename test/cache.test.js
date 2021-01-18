@@ -2,7 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 
 const IFate = require('../index');
-const App = require('../web/RestApplication');
+const App = require('../rest/Application');
 const Cache = require('../cache/Cache');
 
 const app = new App({
@@ -14,7 +14,6 @@ const app = new App({
         }
     }
 });
-
 
 // api
 const msg = 'hello cache';
@@ -30,9 +29,10 @@ app.get('/cache', async (req, res) => {
 const main = new IFate(app);
 const server = main.getServer();
 
-// test restful api
-describe('RESTful api', function() {
-    it('simple get', function(done) {
+
+// test
+describe('Cache', function() {
+    it('set get test', function(done) {
         request(server)
             .get('/cache')
             .expect(200)

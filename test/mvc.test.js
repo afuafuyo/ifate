@@ -1,5 +1,4 @@
 // node >= 6.0.0
-
 const request = require('supertest');
 const assert = require('assert');
 
@@ -20,7 +19,7 @@ const main = new IFate(app);
 const server = main.getServer();
 
 // test
-describe('MVC: ', function() {
+describe('MVC', function() {
     it('simple get', function(done) {
         request(server)
             .get('/')

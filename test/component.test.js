@@ -23,8 +23,8 @@ class EventController extends Controller {
 }
 EventController.eventFlag = '';
 
-describe('simple-event', function() {
-    it('simple', function(done) {
+describe('Component', function() {
+    it('simple event', function(done) {
         new EventController().run();
 
         assert.equal(EventController.eventFlag, 'this is data');
@@ -76,8 +76,8 @@ class StaticBehaviorController extends Controller {
     }
 }
 
-describe('static-behavior', function() {
-    it('injectedBehavior', function(done) {
+describe('Component', function() {
+    it('static behavior', function(done) {
         let b = new StaticBehaviorController();
         let rs = b.run();
         assert.equal(rs, 'data processed by behavior');
@@ -106,8 +106,8 @@ class DynamicBehaviorController extends Controller {
     }
 }
 
-describe('dynamic-behavior', function() {
-    it('injectedBehavior', function(done) {
+describe('Component', function() {
+    it('dynamic behavior', function(done) {
         let b = new DynamicBehaviorController();
         let rs = b.run();
         assert.equal(rs, 'data processed by behavior--process2');

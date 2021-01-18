@@ -1,5 +1,4 @@
 // node >= 6.0.0
-
 const request = require('supertest');
 const assert = require('assert');
 
@@ -39,7 +38,7 @@ const main = new IFate(app);
 const server = main.getServer();
 
 // test restful api
-describe('RESTful api', function() {
+describe('RESTful', function() {
     it('simple get', function(done) {
         request(server)
             .get('/abc')
