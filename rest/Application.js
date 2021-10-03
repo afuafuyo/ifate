@@ -4,11 +4,10 @@
  */
 'use strict';
 
-const url = require('url');
-
 const FastRegExpRouter = require('fast-regexp-router');
 
 const Fate = require('../Fate');
+const Request = require('../http/Request');
 const CoreApp = require('../core/Application');
 const InvalidRouteException = require('../core/InvalidRouteException');
 
@@ -51,7 +50,7 @@ class Application extends CoreApp {
      * @param {any} response
      */
     requestListener(request, response) {
-        let route = url.parse(request.url).pathname;
+        let route = new Request(request).createURL().pathname;
         let ret = this.resolveRoutes(route, request.method);
 
         if(null === ret) {

@@ -4,10 +4,9 @@
  */
 'use strict';
 
-const url = require('url');
-
 const Fate = require('../Fate');
 const CoreApp = require('../core/Application');
+const Request = require('../http/Request');
 const Controller = require('./Controller');
 const StringHelper = require('../helpers/StringHelper');
 const InvalidRouteException = require('../core/InvalidRouteException');
@@ -86,7 +85,7 @@ class Application extends CoreApp {
      * @inheritdoc
      */
     requestListener(request, response) {
-        let route = url.parse(request.url).pathname;
+        let route = new Request(request).createURL().pathname;
         let controller = this.createController(route);
 
         if(null === controller) {
