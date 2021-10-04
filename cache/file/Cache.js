@@ -91,7 +91,7 @@ class Cache extends ICache {
                         }
 
                         fs.utimes(cacheFile, life, life, () => {
-                            resolve();
+                            resolve(null);
                         });
                     });
 
@@ -107,7 +107,7 @@ class Cache extends ICache {
                         }
 
                         fs.utimes(cacheFile, life, life, () => {
-                            resolve();
+                            resolve(null);
                         });
                     });
                 });
@@ -181,7 +181,7 @@ class Cache extends ICache {
                     return;
                 }
 
-                resolve();
+                resolve(null);
             });
         });
     }
