@@ -56,11 +56,9 @@ class Logger {
 
         for(let target in settings.targets) {
             if(undefined !== settings.targets[target].classPath) {
-                let clazz = Fate.createObject(settings.targets[target].classPath,
-                    settings.targets[target]);
-                clazz.on(ILog.EVENT_FLUSH, clazz);
-
-                this.targets.push(clazz);
+                let instance = Fate.createObjectAsDefinition(settings.targets[target]);
+                instance.on(ILog.EVENT_FLUSH, instance);
+                this.targets.push(instance);
             }
         }
     }

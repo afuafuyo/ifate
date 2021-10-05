@@ -19,7 +19,7 @@ const TimeHelper = require('../../helpers/TimeHelper');
  *     'targets': {
  *         'file': {
  *             'classPath': 'fate/log/file/Log',
- *             'logPath': '@runtime/logs',
+ *             'logPath': 'absolute path',
  *             'logFile': 'system.log',
  *             'maxFileSize': 10240
  *         }
@@ -39,23 +39,17 @@ class Log extends ILog {
         /**
          * @property {String} absolute path of log file. default at runtime directory of the application
          */
-        this.logPath = undefined === configs.logPath
-            ? Fate.getPathAlias('@runtime/logs')
-            : configs.logPath;
+        this.logPath = Fate.getPathAlias('@runtime/logs');
 
         /**
          * @property {String} log file name
          */
-        this.logFile = undefined === configs.logFile
-            ? 'system.log'
-            : configs.logFile;
+        this.logFile = 'system.log';
 
         /**
          * @property {Number} maxFileSize maximum log file size in KB
          */
-        this.maxFileSize = undefined === configs.maxFileSize
-            ? 10240
-            : configs.maxFileSize;
+        this.maxFileSize = 10240;
     }
 
     /**

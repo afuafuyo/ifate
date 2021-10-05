@@ -16,7 +16,7 @@ const FileHelper = require('../../helpers/FileHelper');
  * 'cache': {
  *      'file': {
  *          'classPath': 'fate/cache/file/Cache',
- *          'cachePath': 'some/path'
+ *          'cachePath': 'absolute path'
  *      }
  * }
  *
@@ -34,16 +34,12 @@ class Cache extends ICache {
         /**
          * @property {String} fileExtension 缓存文件后缀
          */
-        this.fileExtension = undefined === config.fileExtension
-            ? '.bin'
-            : config.fileExtension;
+        this.fileExtension = '.bin';
 
         /**
          * @property {String} cachePath 缓存目录
          */
-        this.cachePath = undefined === config.cachePath
-            ? Fate.getPathAlias('@runtime/caches')
-            : config.cachePath;
+        this.cachePath = Fate.getPathAlias('@runtime/caches');
     }
 
     /**

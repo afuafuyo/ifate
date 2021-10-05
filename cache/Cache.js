@@ -18,33 +18,29 @@ class Cache {
      * @return {ICache}
      */
     static getCache(cacheFlag) {
-        if(undefined === cacheFlag) {
-            throw new InvalidArgumentException('An argument must be provide for getCache()');
-        }
+        let app = Fate.app;
 
-        if(undefined === Fate.app.cache || undefined === Fate.app.cache[cacheFlag]) {
+        if(undefined === app.cache || undefined === app.cache[type]) {
             throw new InvalidConfigException('The cache configuration is not found');
         }
 
-        if(undefined === Fate.app.cache[cacheFlag].classPath) {
+        if(undefined === app.cache[type].classPath) {
             throw new InvalidConfigException('The classPath of cache configuration is not found');
         }
 
-        if(undefined === Cache._caches[cacheFlag] || null === Cache._caches[cacheFlag]) {
-            Cache._caches[cacheFlag] = Fate.createObject(Fate.app.cache[cacheFlag].classPath,
-                Fate.app.cache[cacheFlag]);
-
-            Cache._caches[cacheFlag].init();
+        if(!Cache._instances.has(type)) {
+            Cache._instances.set(type, Fate.createObjectAsDefinition(app.cache[type]));
+            Cache._instances.get(type).init();
         }
 
-        return Cache._caches[cacheFlag];
+        rreturn Cache._instances.get(type);
     }
 
 }
 
 /**
- * @var {Map<String, ICache>} _caches
+ * @type {Map<String, any>}
  */
-Cache._caches = {};
+Cache._instances = new Map();
 
 module.exports = Cache;
