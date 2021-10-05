@@ -23,12 +23,7 @@ const FileHelper = require('../../helpers/FileHelper');
  */
 class Cache extends ICache {
 
-    /**
-     * constructor
-     *
-     * @param {Object} config
-     */
-    constructor(config) {
+    constructor() {
         super();
 
         /**

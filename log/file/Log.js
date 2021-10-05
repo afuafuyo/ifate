@@ -30,10 +30,7 @@ const TimeHelper = require('../../helpers/TimeHelper');
  */
 class Log extends ILog {
 
-    /**
-     * constructor
-     */
-    constructor(configs) {
+    constructor() {
         super();
 
         /**
