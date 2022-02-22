@@ -1,14 +1,8 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const Exception = require('./Exception');
-
+"use strict";
+const Exception = require("./Exception");
 /**
  * 非法参数异常
  */
-class InvalidArgumentException extends Exception {}
-
+class InvalidArgumentException extends Exception {
+}
 module.exports = InvalidArgumentException;

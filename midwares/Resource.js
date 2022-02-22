@@ -1,17 +1,10 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const fs = require('fs');
-const Request = require('../http/Request');
-
+"use strict";
+const fs = require("fs");
+const Request = require("../http/Request");
 /**
  * 静态资源处理
  */
 class Resource {
-
     /**
      * constructor
      *
@@ -28,16 +21,14 @@ class Resource {
         this.root = root;
         this.options = options;
     }
-
     /**
      * 入口
      *
-     * @return {Function} 中间件
+     * @return {any} 中间件
      */
     serve() {
         return this.handler.bind(this);
     }
-
     /**
      * 是否是静态资源
      *
@@ -51,21 +42,17 @@ class Resource {
         let mime = undefined === this.options.mime ?
             Resource.mime :
             Object.assign({}, Resource.mime, this.options.mime);
-
-        if('' === ext) {
+        if ('' === ext) {
             return false;
         }
-
-        for(let key in mime) {
-            if(ext === key) {
+        for (let key in mime) {
+            if (ext === key) {
                 ret = true;
                 break;
             }
         }
-
         return ret;
     }
-
     /**
      * 获取 mimeType
      *
@@ -75,118 +62,97 @@ class Resource {
     getMimeType(pathName) {
         let ret = '';
         let ext = this.getExtName(pathName);
-        let mime = undefined === this.options.mime ?
-            Resource.mime :
-            Object.assign({}, Resource.mime, this.options.mime);
-
-        for(let key in mime) {
-            if(ext === key) {
+        let mime = undefined === this.options.mime
+            ? Resource.mime
+            : Object.assign({}, Resource.mime, this.options.mime);
+        for (let key in mime) {
+            if (ext === key) {
                 ret = mime[key];
                 break;
             }
         }
-
         return ret;
     }
-
     /**
      * 获得扩展名
      *
      * @param {String} pathName 访问路径
-     * @return {String}
+     * @return {String} 扩展名
      */
     getExtName(pathName) {
         let index = pathName.lastIndexOf('.');
-
-        if(-1 === index) {
+        if (-1 === index) {
             return '';
         }
-
         return pathName.substring(index + 1);
     }
-
     /**
      * 处理静态资源
      *
      * @param {any} request
      * @param {any} response
-     * @param {Function} next
+     * @param {any} next
      */
     handler(request, response, next) {
-        if('GET' !== request.method || !this.isStatic(request)) {
+        if ('GET' !== request.method || !this.isStatic(request)) {
             next();
             return;
         }
-
         let pathname = new Request(request).createURL().pathname;
         let mimeType = this.getMimeType(pathname);
-
         pathname = (this.root + pathname).replace(/\.\./g, '');
-        while(pathname.indexOf('//') >= 0) {
+        while (pathname.indexOf('//') >= 0) {
             pathname = pathname.replace('//', '/');
         }
-
-        fs.stat(pathname, (err, stats) => {
-            if(null !== err) {
+        fs.stat(pathname, (error, stats) => {
+            if (null !== error) {
                 response.writeHead(404);
                 response.end();
                 return;
             }
-
-            if(stats.isDirectory()) {
+            if (stats.isDirectory()) {
                 response.writeHead(403);
                 response.end();
                 return;
             }
-
             // headers
             response.setHeader('Content-Type', '' === mimeType ? 'text/plain' : mimeType);
             response.setHeader('Last-Modified', stats.mtime.toUTCString());
-
             // 设置缓存
             let extName = '.' + this.getExtName(pathname);
             let cacheConfig = undefined === this.options.cache ?
                 Resource.cache : this.options.cache;
-
-            if(cacheConfig.regExp.test(extName)) {
+            if (cacheConfig.regExp.test(extName)) {
                 response.setHeader('Expires', new Date(Date.now() + cacheConfig.maxAge).toUTCString());
                 response.setHeader('Cache-Control', 'max-age=' + cacheConfig.maxAge / 1000);
             }
-
             // 有缓存直接返回
-            if(stats.mtime.toUTCString() === request.headers['if-modified-since']) {
+            if (stats.mtime.toUTCString() === request.headers['if-modified-since']) {
                 response.writeHead(304);
                 response.end();
                 return;
             }
-
             let rs = fs.createReadStream(pathname);
             response.writeHead(200);
             rs.pipe(response);
         });
     }
-
 }
-
 /**
  * MimeType
  */
 Resource.mime = {
     'js': 'text/javascript',
     'css': 'text/css',
-
     'ico': 'image/x-icon',
     'gif': 'image/gif',
     'png': 'image/png',
     'jpg': 'image/jpeg',
     'jpeg': 'image/jpeg',
-
     'svg': 'image/svg+xml',
     'tiff': 'image/tiff',
-
     'swf': 'application/x-shockwave-flash'
 };
-
 /**
  * 缓存
  */
@@ -196,5 +162,4 @@ Resource.cache = {
     // 缓存时间毫秒
     'maxAge': 1000 * 3600 * 24 * 30
 };
-
 module.exports = Resource;

@@ -1,15 +1,10 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const Fate = require('../Fate');
-const InvalidConfigException = require('../core/InvalidConfigException');
-
+"use strict";
+const Fate = require("../Fate");
+const InvalidConfigException = require("../core/InvalidConfigException");
 /**
  * 服务定位器 [service locator](//en.wikipedia.org/wiki/Service_locator_pattern)
  *
+ * ```
  * eg.
  * const serviceLocator = new ServiceLocator();
  * serviceLocator.setServicesAsDefinition({
@@ -24,22 +19,13 @@ const InvalidConfigException = require('../core/InvalidConfigException');
  * });
  *
  * const instanceService1 = serviceLocator.getService('service1');
- *
+ * ```
  */
 class ServiceLocator {
-
     constructor() {
-        /**
-         * @property {Map<String, any>} services
-         */
         this.services = new Map();
-
-        /**
-         * @property {Map<String, any>} definitions
-         */
         this.definitions = new Map();
     }
-
     /**
      * 设置服务
      *
@@ -47,19 +33,16 @@ class ServiceLocator {
      * @param {any} service
      */
     setService(key, service) {
-        if(null === service) {
+        if (null === service) {
             this.services.delete(key);
-
             return;
         }
-
         this.services.set(key, service);
     }
-
     /**
      * 以定义方式设置服务
      *
-     * @param {any} definition
+     * @param {Object} definition
      *
      * {
      *     'service1': {...},
@@ -68,21 +51,17 @@ class ServiceLocator {
      *
      */
     setServicesAsDefinition(definition) {
-        for(let key in definition) {
-            if(null === definition[key]) {
+        for (let key in definition) {
+            if (null === definition[key]) {
                 this.definitions.delete(key);
-
                 continue;
             }
-
-            if(undefined === definition[key].classPath) {
-                throw new InvalidConfigException('The service configuration must contain a "classPath" key');
+            if (undefined === definition[key].classPath) {
+                throw new InvalidConfigException('The "classPath" configuration of the service is missing');
             }
-
             this.definitions.set(key, definition[key]);
         }
     }
-
     /**
      * 检查服务是否存在
      *
@@ -92,25 +71,20 @@ class ServiceLocator {
     hasService(key) {
         return this.services.has(key) || this.definitions.has(key);
     }
-
     /**
      * 获取服务
      *
      * @param {String} key
-     * @return {any | null}
+     * @return {Object | null}
      */
     getService(key) {
-        if(this.services.has(key)) {
+        if (this.services.has(key)) {
             return this.services.get(key);
         }
-
-        if(this.definitions.has(key)) {
+        if (this.definitions.has(key)) {
             return Fate.createObject(this.definitions.get(key));
         }
-
         return null;
     }
-
 }
-
 module.exports = ServiceLocator;

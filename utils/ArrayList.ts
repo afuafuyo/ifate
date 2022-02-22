@@ -1,5 +1,4 @@
 import IList from './IList';
-import IndexOutOfBoundsException = require('../core/IndexOutOfBoundsException');
 
 /**
  * ArrayList
@@ -9,12 +8,12 @@ class ArrayList implements IList {
     /**
      * The size of the List
      */
-    private length: number;
+    private length: number = 0;
 
     /**
      * The array that stored the elements
      */
-    private elementData: any[];
+    private elementData: any[] = [];
 
     /**
      * 将源数组拷贝到目标数组
@@ -50,10 +49,7 @@ class ArrayList implements IList {
         }
     }
 
-    constructor() {
-        this.length = 0;
-        this.elementData = [];
-    }
+    constructor() {}
 
     [Symbol.iterator]() {
         let index = 0;
@@ -74,8 +70,6 @@ class ArrayList implements IList {
 
     /**
      * Returns the number of elements in this list
-     *
-     * @returns {Number}
      */
     public size(): number {
         return this.length;
@@ -83,8 +77,6 @@ class ArrayList implements IList {
 
     /**
      * Returns true if this list contains no elements
-     *
-     * @returns {Boolean}
      */
     public isEmpty(): boolean {
         return 0 === this.length;
@@ -94,7 +86,6 @@ class ArrayList implements IList {
      * Returns true if this list contains the specified element
      *
      * @param {any} element
-     * @returns {Boolean}
      */
     public contains(element: any): boolean {
         return this.indexOf(element) >= 0;
@@ -103,8 +94,7 @@ class ArrayList implements IList {
     /**
      * Returns the index of the first occurrence of the specified element in this list, or -1 if does not contain the element
      *
-     * @param {ANY} element
-     * @returns {Number}
+     * @param {any} element
      */
     public indexOf(element: any): number {
         for(let i=0; i<this.length; i++) {
@@ -120,7 +110,6 @@ class ArrayList implements IList {
      * Returns the index of the last occurrence of the specified element in this list, or -1 if does not contain the element
      *
      * @param {any} element
-     * @returns {Number}
      */
     public lastIndexOf(element: any): number {
         for(let i=this.length-1; i>=0; i--) {
@@ -152,16 +141,17 @@ class ArrayList implements IList {
      *
      * @param {Number} index
      * @param {any} element
-     * @throws {IndexOutOfBoundsException}
      */
-    public insert(index: number, element: any): void {
+    public insert(index: number, element: any): boolean {
         if(index > this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return false;
         }
 
         ArrayList.arrayCopy(this.elementData, index, this.elementData, index + 1, this.length - index);
         this.length++;
         this.elementData[index] = element;
+
+        return true;
     }
 
     /**
@@ -189,11 +179,10 @@ class ArrayList implements IList {
      * Removes the element at the specified position in this list
      *
      * @param {Number} index
-     * @throws {IndexOutOfBoundsException}
      */
     public removeAt(index: number): any {
         if(index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
 
         let oldValue = this.elementData[index];
@@ -210,11 +199,10 @@ class ArrayList implements IList {
      * Returns the element at the specified position in this list
      *
      * @param {Number} index
-     * @throws {IndexOutOfBoundsException}
      */
     public get(index: number): any {
         if(index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
 
         return this.elementData[index];
@@ -225,11 +213,10 @@ class ArrayList implements IList {
      *
      * @param {Number} index
      * @param {any} element
-     * @throws {IndexOutOfBoundsException}
      */
     public set(index: number, element: any): any {
         if(index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
 
         let oldValue = this.elementData[index];
@@ -259,4 +246,5 @@ class ArrayList implements IList {
     }
 
 }
+
 export = ArrayList;

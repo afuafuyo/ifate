@@ -1,48 +1,41 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const Behavior = require('./Behavior');
-const Controller = require('./Controller');
-
+"use strict";
+const Behavior = require("./Behavior");
+const Controller = require("./Controller");
 /**
  * 动作过滤器
  *
  * 过滤器会在控制器的动作执行之前执行并且只支持同步操作
+ *
+ * 自定义过滤器需要从此类继承 并选择实现 `beforeAction()` 或者 `afterAction()`
  */
 class ActionFilter extends Behavior {
-
     constructor() {
         super();
-
         /**
-         * @typedef {import('./ActionEvent')} ActionEvent
-         * @param {ActionEvent} actionEvent
+         * @param {import('./ActionEvent')} actionEvent
          */
         this.beforeFilter = (actionEvent) => {
+            // 如果前一个 valid 为 false 那么本次 filter 不再执行
+            if (!actionEvent.valid) {
+                this.unListen();
+                return;
+            }
             this.beforeAction(actionEvent);
-
             // since runControllerAction() may block the program
             // afterFilter() will not execute when `false === actionEvent.valid`
             // so unListen here
-            if(!actionEvent.valid) {
+            if (!actionEvent.valid) {
                 this.unListen();
             }
         };
-
         /**
-         * @typedef {import('./ActionEvent')} ActionEvent
-         * @param {ActionEvent} actionEvent
+         * @param {import('./ActionEvent')} actionEvent
          */
         this.afterFilter = (actionEvent) => {
             this.unListen();
-
             this.afterAction(actionEvent);
         };
     }
-
     /**
      * @inheritdoc
      */
@@ -52,17 +45,13 @@ class ActionFilter extends Behavior {
             [Controller.EVENT_AFTER_ACTION, this.afterFilter]
         ];
     }
-
     /**
      * 前置过滤
      */
-    beforeAction(actionEvent) {}
-
+    beforeAction(actionEvent) { }
     /**
      * 后置过滤
      */
-    afterAction(actionEvent) {}
-
+    afterAction(actionEvent) { }
 }
-
 module.exports = ActionFilter;

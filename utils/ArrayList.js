@@ -1,11 +1,16 @@
 "use strict";
-const IndexOutOfBoundsException = require("../core/IndexOutOfBoundsException");
 /**
  * ArrayList
  */
 class ArrayList {
     constructor() {
+        /**
+         * The size of the List
+         */
         this.length = 0;
+        /**
+         * The array that stored the elements
+         */
         this.elementData = [];
     }
     /**
@@ -53,16 +58,12 @@ class ArrayList {
     }
     /**
      * Returns the number of elements in this list
-     *
-     * @returns {Number}
      */
     size() {
         return this.length;
     }
     /**
      * Returns true if this list contains no elements
-     *
-     * @returns {Boolean}
      */
     isEmpty() {
         return 0 === this.length;
@@ -71,7 +72,6 @@ class ArrayList {
      * Returns true if this list contains the specified element
      *
      * @param {any} element
-     * @returns {Boolean}
      */
     contains(element) {
         return this.indexOf(element) >= 0;
@@ -79,8 +79,7 @@ class ArrayList {
     /**
      * Returns the index of the first occurrence of the specified element in this list, or -1 if does not contain the element
      *
-     * @param {ANY} element
-     * @returns {Number}
+     * @param {any} element
      */
     indexOf(element) {
         for (let i = 0; i < this.length; i++) {
@@ -94,7 +93,6 @@ class ArrayList {
      * Returns the index of the last occurrence of the specified element in this list, or -1 if does not contain the element
      *
      * @param {any} element
-     * @returns {Number}
      */
     lastIndexOf(element) {
         for (let i = this.length - 1; i >= 0; i--) {
@@ -122,15 +120,15 @@ class ArrayList {
      *
      * @param {Number} index
      * @param {any} element
-     * @throws {IndexOutOfBoundsException}
      */
     insert(index, element) {
         if (index > this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return false;
         }
         ArrayList.arrayCopy(this.elementData, index, this.elementData, index + 1, this.length - index);
         this.length++;
         this.elementData[index] = element;
+        return true;
     }
     /**
      * Removes the first occurrence of the specified element from this list
@@ -155,11 +153,10 @@ class ArrayList {
      * Removes the element at the specified position in this list
      *
      * @param {Number} index
-     * @throws {IndexOutOfBoundsException}
      */
     removeAt(index) {
         if (index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
         let oldValue = this.elementData[index];
         let move = this.length - index - 1;
@@ -173,11 +170,10 @@ class ArrayList {
      * Returns the element at the specified position in this list
      *
      * @param {Number} index
-     * @throws {IndexOutOfBoundsException}
      */
     get(index) {
         if (index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
         return this.elementData[index];
     }
@@ -186,11 +182,10 @@ class ArrayList {
      *
      * @param {Number} index
      * @param {any} element
-     * @throws {IndexOutOfBoundsException}
      */
     set(index, element) {
         if (index >= this.length) {
-            throw new IndexOutOfBoundsException('index=' + index + ', size=' + this.length);
+            return null;
         }
         let oldValue = this.elementData[index];
         this.elementData[index] = element;

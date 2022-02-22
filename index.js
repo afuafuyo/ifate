@@ -1,53 +1,46 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const http = require('http');
-
-const Hook = require('./core/Hook');
-
+"use strict";
+const http = require("http");
+const Hook = require("./core/Hook");
 /**
  * 入口
  */
-class IFate {
+class FateJs {
     /**
      * constructor
      *
-     * @param {any} application 应用实例
+     * @typedef {import('./core/Application')} Application
+     * @param {Application} application 应用实例
      */
     constructor(application) {
+        /**
+         * http server
+         */
         this.server = null;
         this.app = application;
     }
-
     // web
     requestListener(req, res) {
         try {
             this.app.requestListener(req, res);
-
-        } catch(e) {
+        }
+        catch (e) {
             this.app.handlerException(res, e);
         }
     }
-
     // handler
     handler(req, res) {
         new Hook().trigger(req, res, (request, response) => {
             this.requestListener(request, response);
         });
     }
-
     /**
      * 获取 http server
      *
-     * @return http server
+     * @return {http.Server}
      */
     getServer() {
         return http.createServer(this.handler.bind(this));
     }
-
     /**
      * listen
      *
@@ -56,11 +49,13 @@ class IFate {
      *
      * If you want to create HTTPS server you can do so as shown here
      *
+     * ```
      * const https = require('https');
-     * const IFate = require('ifate');
+     * const FateJs = require('ifate');
      *
-     * const main = new IFate({ ... });
+     * const main = new FateJs({ ... });
      * https.createServer({ ... }, main.handler.bind(main)).listen(443);
+     * ```
      *
      */
     listen(port, callback) {
@@ -68,5 +63,4 @@ class IFate {
         this.server.listen(port, callback);
     }
 }
-
-module.exports = IFate;
+module.exports = FateJs;

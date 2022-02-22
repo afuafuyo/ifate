@@ -1,30 +1,16 @@
+"use strict";
 /**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-/**
- * Response
+ * server response
  */
 class Response {
-
-    /**
-     * constructor
-     *
-     * @param {any} response
-     */
     constructor(response) {
         this.response = response;
     }
-
     /**
      * sends data to client and end response
      *
-     * @param {String} content
+     * @param {String} content 内容
      */
-    send(content = '') {}
-
+    send(content = '') { }
 }
-
 module.exports = Response;

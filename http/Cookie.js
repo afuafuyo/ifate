@@ -1,16 +1,10 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
+"use strict";
 /**
  * 一条 HTTP cookie 信息
  *
  * name=value; Expires=expires; Path=path; Domain=domain[; secure][; httponly]
  */
 class Cookie {
-
     /**
      * constructor
      *
@@ -31,7 +25,6 @@ class Cookie {
         this.secure = secure;
         this.httpOnly = httpOnly;
     }
-
     /**
      * 格式化一条 cookie
      *
@@ -39,24 +32,20 @@ class Cookie {
      */
     toString() {
         let ret = [this.name + '=' + this.value];
-
-        if(0 !== this.expires) {
+        if (0 !== this.expires) {
             ret.push('Expires=' + new Date(this.expires).toUTCString());
         }
         ret.push('Path=' + this.path);
-        if('' !== this.domain) {
+        if ('' !== this.domain) {
             ret.push('Domain=' + this.domain);
         }
-        if(this.secure) {
+        if (this.secure) {
             ret.push('Secure');
         }
-        if(this.httpOnly) {
+        if (this.httpOnly) {
             ret.push('HttpOnly');
         }
-
         return ret.join('; ');
     }
-
 }
-
 module.exports = Cookie;

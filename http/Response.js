@@ -1,15 +1,9 @@
-/**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-const Fate = require('../Fate');
-const CoreResponse = require('../core/Response');
-const Cookie = require('./Cookie');
-const Headers = require('./Headers');
-const HttpException = require('../core/HttpException');
-
+"use strict";
+const Fate = require("../Fate");
+const CoreResponse = require("../core/Response");
+const Cookie = require("./Cookie");
+const Headers = require("./Headers");
+const HttpException = require("../core/HttpException");
 /**
  * HTTP response
  *
@@ -25,51 +19,43 @@ const HttpException = require('../core/HttpException');
  *
  */
 class Response extends CoreResponse {
-
     /**
      * constructor
      *
-     * @param {any} response
+     * @typedef {import('http').ServerResponse} ServerResponse
+     * @param {ServerResponse} response
      */
     constructor(response) {
         super(response);
-
         /**
-         * @property {String} encoding 编码
+         * 编码
          */
         this.encoding = Fate.app.encoding;
-
         /**
-         * @property {String} version HTTP protocol version
+         * HTTP protocol version
          */
-        //this.version = '1.1';
-
+        this.version = '1.1';
         /**
-         * @property {Number} statusCode the HTTP status code
+         * the HTTP status code
          */
         this.statusCode = 200;
-
         /**
-         * @property {String} statusText the HTTP status description that comes together with the status code.
+         * the HTTP status description that comes together with the status code
          */
         this.statusText = 'OK';
-
         /**
-         * @property {Headers} headers HTTP headers
+         * HTTP headers
          */
         this.headers = new Headers();
-
         /**
-         * @property {String} content HTTP content
+         * HTTP content
          */
         this.content = '';
-
         /**
-         * @property {String[]} cookies HTTP cookies
+         * HTTP cookies
          */
         this.cookies = [];
     }
-
     /**
      * 得到 http status code
      *
@@ -78,7 +64,6 @@ class Response extends CoreResponse {
     getStatusCode() {
         return this.statusCode;
     }
-
     /**
      * 设置 http status code
      *
@@ -86,34 +71,29 @@ class Response extends CoreResponse {
      * @param {String} text the status text
      */
     setStatusCode(value, text = '') {
-        if(value < 100 || value >= 600) {
+        if (value < 100 || value >= 600) {
             throw new HttpException('HTTP status code is invalid');
         }
-
         this.statusCode = value;
-
-        if('' === text) {
+        if ('' === text) {
             this.statusText = undefined !== Response.httpStatuses[String(value)]
                 ? Response.httpStatuses[String(value)]
                 : '';
-
-        } else {
+        }
+        else {
             this.statusText = text;
         }
-
         return this;
     }
-
     /**
      * 获取 header
      *
      * @param {String} name the name of the header
-     * @return {String | null}
+     * @return {String}
      */
     getHeader(name) {
         return this.headers.get(name);
     }
-
     /**
      * 设置 header
      *
@@ -122,10 +102,8 @@ class Response extends CoreResponse {
      */
     setHeader(name, value) {
         this.headers.add(name, value);
-
         return this;
     }
-
     /**
      * 获取实体内容
      *
@@ -134,7 +112,6 @@ class Response extends CoreResponse {
     getContent() {
         return this.content;
     }
-
     /**
      * 设置实体内容
      *
@@ -142,72 +119,48 @@ class Response extends CoreResponse {
      */
     setContent(content) {
         this.content = content;
-
         return this;
     }
-
     /**
      * 设置一条 cookie
-     *
-     * @param {String} name cookie name
-     * @param {String} value cookie value
-     * @param {any} options other config
      */
     setCookie(name, value, expires = 0, path = '', domain = '', secure = false, httpOnly = false) {
-        let cookie = new Cookie(
-            name,
-            value,
-            expires,
-            path,
-            domain,
-            secure,
-            httpOnly);
-
+        let cookie = new Cookie(name, value, expires, path, domain, secure, httpOnly);
         this.cookies.push(cookie.toString());
-
         return this;
     }
-
     /**
      * 发送 header
      */
     sendHeaders() {
-        if(this.response.headersSent) {
+        if (this.response.headersSent) {
             return;
         }
-
-        for(let [name, value] of this.headers) {
+        for (let [name, value] of this.headers) {
             this.response.setHeader(name, value);
         }
-
-        if(this.cookies.length > 0) {
+        if (this.cookies.length > 0) {
             this.response.setHeader('Set-Cookie', this.cookies);
         }
-
         this.response.writeHead(this.statusCode, this.statusText);
     }
-
     /**
      * 发送内容
      */
     sendContent() {
         this.response.write(this.content, this.encoding);
     }
-
     /**
      * @inheritdoc
      */
     send(content = '') {
-        if('' !== content) {
+        if ('' !== content) {
             this.setContent(content);
         }
-
         this.sendHeaders();
         this.sendContent();
-
         this.response.end();
     }
-
     /**
      * 重定向
      *
@@ -216,16 +169,12 @@ class Response extends CoreResponse {
      */
     redirect(url, statusCode = 302) {
         this.setHeader('Location', url);
-
         this.setStatusCode(statusCode);
-
         this.send();
     }
-
 }
-
 /**
- * @var list of HTTP status codes and the corresponding texts
+ * list of HTTP status codes and the corresponding texts
  */
 Response.httpStatuses = {
     // Informational
@@ -233,7 +182,6 @@ Response.httpStatuses = {
     '101': 'Switching Protocols',
     '102': 'Processing',
     '118': 'Connection timed out',
-
     // Success
     '200': 'OK',
     '201': 'Created',
@@ -246,7 +194,6 @@ Response.httpStatuses = {
     '208': 'Already Reported',
     '210': 'Content Different',
     '226': 'IM Used',
-
     // Redirection
     '300': 'Multiple Choices',
     '301': 'Moved Permanently',
@@ -258,7 +205,6 @@ Response.httpStatuses = {
     '307': 'Temporary Redirect',
     '308': 'Permanent Redirect',
     '310': 'Too many Redirect',
-
     // Client error
     '400': 'Bad Request',
     '401': 'Unauthorized',
@@ -289,7 +235,6 @@ Response.httpStatuses = {
     '431': 'Request Header Fields Too Large',
     '449': 'Retry With',
     '450': 'Blocked by Windows Parental Controls',
-
     // Server error
     '500': 'Internal Server Error',
     '501': 'Not Implemented',
@@ -303,5 +248,4 @@ Response.httpStatuses = {
     '510': 'Not Extended',
     '511': 'Network Authentication Required'
 };
-
 module.exports = Response;

@@ -1,17 +1,12 @@
+"use strict";
+const LinkedList = require("../utils/LinkedList");
 /**
- * @author yu
- * @license http://www.apache.org/licenses/LICENSE-2.0
- */
-'use strict';
-
-/**
- * Simple Event
+ * 简单 Event
  */
 class Event {
-
     constructor() {
         /**
-         * @property {Map<String, Array>} eventsMap the attached event handlers
+         * the attached event handlers
          *
          * {
          *      'eventName1': [fn1, fn2],
@@ -20,7 +15,6 @@ class Event {
          */
         this.eventsMap = new Map();
     }
-
     /**
      * 注册事件处理
      *
@@ -28,13 +22,11 @@ class Event {
      * @param {Function} handler 事件处理器
      */
     on(eventName, handler) {
-        if(!this.eventsMap.has(eventName)) {
-            this.eventsMap.set(eventName, []);
+        if (!this.eventsMap.has(eventName)) {
+            this.eventsMap.set(eventName, new LinkedList());
         }
-
-        this.eventsMap.get(eventName).push(handler);
+        this.eventsMap.get(eventName).add(handler);
     }
-
     /**
      * 注销事件
      *
@@ -42,30 +34,22 @@ class Event {
      * @param {Function} handler 事件处理器
      */
     off(eventName, handler = null) {
-        if(!this.eventsMap.has(eventName)) {
+        if (!this.eventsMap.has(eventName)) {
             return;
         }
-
-        if(null === handler) {
+        if (null === handler) {
             this.eventsMap.delete(eventName);
             return;
         }
-
-        const handlers = this.eventsMap.get(eventName);
-        for(let i=0; i<handlers.length; i++) {
-            if(handler === handlers[i]) {
-                handlers.splice(i, 1);
-            }
-        }
+        let list = this.eventsMap.get(eventName);
+        list.remove(handler);
     }
-
     /**
      * 注销所有事件
      */
     offAll() {
         this.eventsMap.clear();
     }
-
     /**
      * 触发事件
      *
@@ -73,16 +57,13 @@ class Event {
      * @param {any} parameter 参数
      */
     trigger(eventName, parameter = null) {
-        if(!this.eventsMap.has(eventName)) {
+        if (!this.eventsMap.has(eventName)) {
             return;
         }
-
-        const handlers = this.eventsMap.get(eventName);
-        for(let i=0; i<handlers.length; i++) {
-            handlers[i](parameter);
+        let handlers = this.eventsMap.get(eventName);
+        for (let h of handlers) {
+            h(parameter);
         }
     }
-
 }
-
 module.exports = Event;
