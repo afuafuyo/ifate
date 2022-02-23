@@ -11,7 +11,7 @@ import InvalidRouteException = require('../core/InvalidRouteException');
 class Application extends CoreApp {
 
     /**
-     * class and method separate
+     * class and method separator
      */
     static separator: string = '@';
 

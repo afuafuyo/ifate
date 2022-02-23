@@ -170,7 +170,7 @@ class Application extends CoreApp {
     }
 }
 /**
- * class and method separate
+ * class and method separator
  */
 Application.separator = '@';
 module.exports = Application;
