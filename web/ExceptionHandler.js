@@ -8,7 +8,7 @@ class ExceptionHandler extends CoreExceptionHandler {
     /**
      * @inheritdoc
      */
-    handlerException(response, exception) {
+    handlerException(exception, response) {
         response.setHeader('Content-Type', 'text/plain');
         response.writeHead(500);
         response.write(null !== Fate.app && true === Fate.app.debug
