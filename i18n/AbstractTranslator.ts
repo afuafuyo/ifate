@@ -1,4 +1,5 @@
 import ITranslator from './ITranslator';
+
 import Fate = require('../Fate');
 
 /**

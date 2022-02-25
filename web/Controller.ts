@@ -1,7 +1,7 @@
+import View = require('./View');
+
 import Fate = require('../Fate');
 import CoreController = require('../core/Controller');
-
-import View = require('./view');
 
 /**
  * 控制器
