@@ -11,53 +11,51 @@ const app = new App({
     'appPath': __dirname + '/app',
     'debug': true,
 
-    'routesMap': {
-        'customRoute': 'app/MyRouteHandler'
-    },
-
-    'modules': {
-        'bbs': 'app/modules/bbs'
+    'translator': {
+        'mytype': {
+            classPath: 'fate/i18n/Translator',
+            basePath: __dirname + '/app/i18n'
+        }
     }
 });
 const server = new FateJs(app).getServer();
 
 
 // test mvc
-describe('MVC', () => {
-    it('simple request test', (done) => {
+describe('I18N', () => {
+    it('zh-CN', (done) => {
         request(server)
-            .get('/?p1=param1&p2=param2')
+            .get('/i18n?lang=cn')
             .end((err, res) => {
                 if (err) return done(err);
 
-                assert.equal(res.text.trim(), 'mvc param1');
+                assert.equal(res.text.trim(), '你好 世界');
 
                 done();
             });
     });
 
-    it('routesmap request test', (done) => {
+    it('en-US', (done) => {
         request(server)
-            .get('/customRoute')
+            .get('/i18n?lang=en')
             .end((err, res) => {
                 if (err) return done(err);
 
-                assert.equal(res.text.trim(), 'custom route data');
+                assert.equal(res.text.trim(), 'hello world');
 
                 done();
             });
     });
 
-    it('module request test', (done) => {
+    it('with param', (done) => {
         request(server)
-            .get('/bbs')
+            .get('/i18n?param=123&lang=en')
             .end((err, res) => {
                 if (err) return done(err);
 
-                assert.equal(res.text.trim(), 'bbs module');
+                assert.equal(res.text.trim(), 'hello world123');
 
                 done();
             });
     });
-
 });

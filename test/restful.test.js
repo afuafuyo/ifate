@@ -1,15 +1,15 @@
 // node >= 6.0.0
+
 const request = require('supertest');
 const assert = require('assert');
 
-const IFate = require('../index');
+const FateJs = require('../index');
 const App = require('../rest/Application');
 
 const app = new App({
     id: 1,
     appPath: __dirname + '/app'
 });
-
 
 // api
 app.get('/abc', (req, res) => {
@@ -24,26 +24,22 @@ app.get('/user/{name}', (req, res, params) => {
 app.get('/user/{name}/{page}', (req, res, params) => {
     res.end( params.name + '_' + params.page );
 });
-app.get('/path/{sub}/path2/{sub2:\\w+}', (req, res, params) => {
-    res.end(params.sub + '_' + params.sub2);
-});
 app.post('/posts/add', (req, res) => {
     res.end('post ok');
 });
-app.get('/xyz', 'app/api/Demo');
+app.get('/xyz', 'app/api/Demo@index');
 app.get('/xyz/{id}', 'app/api/Demo@testParam');
 
+const fateJs = new FateJs(app);
+const server = fateJs.getServer();
 
-const main = new IFate(app);
-const server = main.getServer();
 
 // test restful api
-describe('RESTful', function() {
-    it('simple get', function(done) {
+describe('RESTful', () => {
+    it('simple request test', (done) => {
         request(server)
             .get('/abc')
-            .expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'get ok');
@@ -52,11 +48,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('get with number param', function(done) {
+    it('with number param request test', (done)  => {
         request(server)
             .get('/user/123')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'number_123');
@@ -65,11 +60,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('get with string param', function(done) {
+    it('with string param request test', (done) => {
         request(server)
             .get('/user/zhangsan')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'str_zhangsan');
@@ -78,11 +72,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('get with multi params', function(done) {
+    it('multi params request test', (done) => {
         request(server)
             .get('/user/zhangsan/1')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'zhangsan_1');
@@ -91,24 +84,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('get with multi params 2', function(done) {
-        request(server)
-            .get('/path/1/path2/img')
-            //.expect(200)
-            .end(function(err, res){
-                if (err) return done(err);
-
-                assert.equal(res.text, '1_img');
-
-                done();
-            });
-    });
-
-    it('simple post', function(done) {
+    it('simple post', (done) => {
         request(server)
             .post('/posts/add')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'post ok');
@@ -117,11 +96,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('class get', function(done) {
+    it('use class', (done) => {
         request(server)
             .get('/xyz')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'restful class ok');
@@ -130,11 +108,10 @@ describe('RESTful', function() {
             });
     });
 
-    it('class get with param', function(done) {
+    it('use class and param', (done) => {
         request(server)
             .get('/xyz/123')
-            //.expect(200)
-            .end(function(err, res){
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, '123');

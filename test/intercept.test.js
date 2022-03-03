@@ -3,10 +3,10 @@
 const request = require('supertest');
 const assert = require('assert');
 
-const IFate = require('../index');
-const Application = require('../web/Application');
+const FateJs = require('../index');
+const App = require('../web/Application');
 
-const app = new Application({
+const app = new App({
     'id': 1,
     'appPath': __dirname + '/app',
     'debug': true,
@@ -17,15 +17,15 @@ const app = new Application({
         'bbs': 'app/modules/bbs'
     }
 });
-const server = new IFate(app).getServer();
+const server = new FateJs(app).getServer();
 
-// test
-describe('intercept routes', function() {
-    it('a route', function(done) {
+
+// test mvc
+describe('Intercept', () => {
+    it('request route /abc', (done) => {
         request(server)
-            .get('/aroute')
-            .expect(200)
-            .end(function(err, res){
+            .get('/abc')
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'intercepted');
@@ -34,11 +34,10 @@ describe('intercept routes', function() {
             });
     });
 
-    it('b route', function(done) {
+    it('request route /xyz', (done) => {
         request(server)
-            .get('/broute')
-            .expect(200)
-            .end(function(err, res){
+            .get('/xyz')
+            .end((err, res) => {
                 if (err) return done(err);
 
                 assert.equal(res.text, 'intercepted');

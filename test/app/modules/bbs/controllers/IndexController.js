@@ -1,7 +1,6 @@
 'use strict';
 
-const Fate = require('../../../../../Fate');
-const Controller = Fate.include('fate/web/Controller');
+const Controller = require('../../../../../web/Controller');
 
 class IndexController extends Controller {
     run(req, res) {

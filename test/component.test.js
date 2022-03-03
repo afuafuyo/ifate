@@ -1,7 +1,5 @@
 const assert = require('assert');
-
-const Fate = require('../Fate');
-const Controller = Fate.include('fate/web/Controller');
+const Controller = require('../web/Controller');
 
 
 // 简单事件测试
@@ -23,8 +21,8 @@ class EventController extends Controller {
 }
 EventController.eventFlag = '';
 
-describe('Component', function() {
-    it('simple event', function(done) {
+describe('SimpleEvent', () => {
+    it('event#trigger() test', (done) => {
         new EventController().run();
 
         assert.equal(EventController.eventFlag, 'this is data');
@@ -34,7 +32,8 @@ describe('Component', function() {
 });
 
 
-const Behavior = Fate.include('fate/core/Behavior');
+// 静态行为测试
+const Behavior = require('../core/Behavior');
 class MyBehavior extends Behavior {
     constructor() {
         super();
@@ -43,18 +42,15 @@ class MyBehavior extends Behavior {
     // 监听 customEvent 事件
     events() {
         return [
-            ['customEvent', (e) => {
-                e.result = 'data processed by behavior';
-            }],
-            ['customEvent2', (e) => {
-                e.result += '--process2';
-            }]
+            [
+                'customEvent',
+                (e) => {
+                    e.result = 'data processed by behavior';
+                }
+            ]
         ];
     }
 }
-
-
-// 静态行为测试
 class StaticBehaviorController extends Controller {
     constructor(context) {
         super(context);
@@ -76,8 +72,8 @@ class StaticBehaviorController extends Controller {
     }
 }
 
-describe('Component', function() {
-    it('static behavior', function(done) {
+describe('Behavior', () => {
+    it('staticBehavior test', (done) => {
         let b = new StaticBehaviorController();
         let rs = b.run();
         assert.equal(rs, 'data processed by behavior');
@@ -99,18 +95,17 @@ class DynamicBehaviorController extends Controller {
     run() {
         let data = {result: ''};
         this.trigger('customEvent', data);
-        this.trigger('customEvent2', data);
 
         this.detachBehavior('myBehavior');
         return data.result;
     }
 }
 
-describe('Component', function() {
-    it('dynamic behavior', function(done) {
+describe('Behavior', () => {
+    it('dynamicBehavior test', (done) => {
         let b = new DynamicBehaviorController();
         let rs = b.run();
-        assert.equal(rs, 'data processed by behavior--process2');
+        assert.equal(rs, 'data processed by behavior');
 
         done();
     });
