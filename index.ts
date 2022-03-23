@@ -56,9 +56,6 @@ class FateJs {
     /**
      * listen
      *
-     * @param {Number} port
-     * @param {Function} callback
-     *
      * If you want to create HTTPS server you can do so as shown here
      *
      * ```
@@ -70,9 +67,9 @@ class FateJs {
      * ```
      *
      */
-    public listen(port: number, callback: any): void {
+    public listen(...args): void {
         this.server = this.getServer();
-        this.server.listen(port, callback);
+        this.server.listen(...args);
     }
 
 }
