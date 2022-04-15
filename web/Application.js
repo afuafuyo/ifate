@@ -151,7 +151,7 @@ class Application extends CoreApp {
         }
         // 搜索顺序 用户配置 -> 模块控制器 -> 普通控制器
         // 模块没有前缀目录
-        let clazz = null;
+        let clazz = '';
         if (null !== this.routesMap && undefined !== this.routesMap[id]) {
             return Fate.createObject(this.routesMap[id], {
                 moduleId: moduleId,
