@@ -54,8 +54,6 @@ new IFate(app).listen(8090, function(){
 
 + @runtime  缓存目录 默认指向 @app/runtime `Fate.app.getRuntimePath()` 可得到该值
 
-+ @root  网站根目录 `Fate.app.getRootPath()` 可得到该值
-
 ### 项目目录示例
 
 <pre>

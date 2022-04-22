@@ -53,14 +53,6 @@ abstract class Application extends Event {
             // set "app/runtime"
             this.setRuntimePath(this.getAppPath() + '/runtime');
         }
-
-        if(undefined !== config.rootPath) {
-            this.setRootPath(config.rootPath);
-            delete config.rootPath;
-
-        } else {
-            this.setRootPath(process.env.PWD);
-        }
     }
 
     /**
@@ -97,24 +89,6 @@ abstract class Application extends Event {
      */
     public getRuntimePath(): string {
         return Fate.getPathAlias('@runtime');
-    }
-
-    /**
-     * 设置 root 路径
-     *
-     * @param {String} path 路径
-     */
-    public setRootPath(path: string): void {
-        Fate.setPathAlias('@root', path);
-    }
-
-    /**
-     * 得到 root 目录
-     *
-     * @return {String} 路径
-     */
-    public getRootPath(): string {
-        return Fate.getPathAlias('@root');
     }
 
     /**
