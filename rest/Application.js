@@ -35,7 +35,7 @@ class Application extends CoreApp {
          */
         this.combineRoutes = false;
         this.cachedRouter = new Map();
-        Fate.config(this, config);
+        Fate.configure(this, config);
     }
     /**
      * 请求处理

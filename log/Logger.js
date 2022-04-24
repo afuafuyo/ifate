@@ -63,15 +63,6 @@ class Logger {
         return Logger._instance;
     }
     /**
-     * 创建新日志对象
-     *
-     * @param {Object} settings
-     * @return {Logger}
-     */
-    static newInstance(settings) {
-        return new Logger(settings);
-    }
-    /**
      * 记录日志
      *
      * @param {String} message 消息

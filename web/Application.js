@@ -63,7 +63,7 @@ class Application extends CoreApp {
          * 默认控制器
          */
         this.defaultControllerId = 'index';
-        Fate.config(this, config);
+        Fate.configure(this, config);
     }
     /**
      * @inheritdoc

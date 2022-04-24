@@ -113,13 +113,13 @@ class Fate {
      */
     static createObjectAsDefinition(definition: any, ...parameters: any[]): any {
         let realClass = Fate.getPathAlias('@' + definition.classPath);
-        let properties = Fate.config({}, definition);
+        let properties = Fate.configure({}, definition);
 
         let ClassName = require(realClass + Fate.defaultExtension);
         let instance = new ClassName(...parameters);
 
         delete properties.classPath;
-        Fate.config(instance, properties);
+        Fate.configure(instance, properties);
 
         return instance;
     }
@@ -146,7 +146,7 @@ class Fate {
      * @param {any} properties 配置项
      * @return {Object} 源对象
      */
-    static config(object: any, properties: any): any {
+    static configure(object: any, properties: any): any {
         for(let key in properties) {
             object[key] = properties[key];
         }

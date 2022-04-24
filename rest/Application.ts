@@ -46,7 +46,7 @@ class Application extends CoreApp {
     constructor(config: any) {
         super(config);
 
-        Fate.config(this, config);
+        Fate.configure(this, config);
     }
 
     /**
