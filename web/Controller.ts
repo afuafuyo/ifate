@@ -25,7 +25,10 @@ class Controller extends CoreController {
      */
     public getView(): View {
         if(null === this.view) {
-            this.view = Fate.createObjectAsString(Fate.app.defaultView, this.context);
+            this.view = Fate.createObjectAsString(
+                this.context.application.defaultView,
+                this.context
+            );
         }
 
         return this.view;

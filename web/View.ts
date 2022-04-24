@@ -1,4 +1,3 @@
-import Fate = require('../Fate');
 import CoreView = require('../core/View');
 
 /**
@@ -102,7 +101,9 @@ class View extends CoreView {
             this.context.response.write(
                 null === err
                     ? content
-                    : (Fate.app.debug ? err.message : 'The view encountered an internal error')
+                    : (this.context.application.debug
+                        ? err.message
+                        : 'The view encountered an internal error')
             );
             this.context.response.end();
         });

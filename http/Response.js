@@ -1,5 +1,4 @@
 "use strict";
-const Fate = require("../Fate");
 const CoreResponse = require("../core/Response");
 const Cookie = require("./Cookie");
 const Headers = require("./Headers");
@@ -30,7 +29,7 @@ class Response extends CoreResponse {
         /**
          * 编码
          */
-        this.encoding = Fate.app.encoding;
+        this.encoding = 'UTF-8';
         /**
          * HTTP protocol version
          */

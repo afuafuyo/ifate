@@ -195,7 +195,7 @@ class Application extends CoreApp {
      * @inheritdoc
      */
     public handlerException(exception: any, response: any): void {
-        let handler = Fate.createObject(this.exceptionHandler);
+        let handler = Fate.createObject(this.exceptionHandler, this);
 
         handler.handlerException(exception, response);
     }

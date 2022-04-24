@@ -4,6 +4,15 @@
 abstract class ExceptionHandler {
 
     /**
+     * 应用
+     */
+    public application: any;
+
+    constructor(application) {
+        this.application = application;
+    }
+
+    /**
      * 异常处理
      *
      * @param {any} exception 异常类

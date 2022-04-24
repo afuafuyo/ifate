@@ -103,7 +103,7 @@ class Response extends CoreResponse {
     /**
      * 编码
      */
-    public encoding: string = Fate.app.encoding;
+    public encoding: string = 'UTF-8';
 
     /**
      * HTTP protocol version

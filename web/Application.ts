@@ -102,7 +102,7 @@ class Application extends CoreApp {
      * @inheritdoc
      */
     public handlerException(exception: any, response: any): void {
-        let handler = Fate.createObject(this.exceptionHandler);
+        let handler = Fate.createObject(this.exceptionHandler, this);
 
         handler.handlerException(exception, response);
     }
@@ -179,6 +179,7 @@ class Application extends CoreApp {
         let clazz = '';
         if(null !== this.routesMap && undefined !== this.routesMap[id]) {
             return Fate.createObject(this.routesMap[id], {
+                application: this,
                 moduleId: moduleId,
                 controllerId: controllerId,
                 viewPath: viewPath
@@ -192,6 +193,7 @@ class Application extends CoreApp {
                 + StringHelper.ucFirst(controllerId) + 'Controller';
 
             return Fate.createObjectAsString(clazz, {
+                application: this,
                 moduleId: moduleId,
                 controllerId: controllerId,
                 viewPath: viewPath
@@ -205,6 +207,7 @@ class Application extends CoreApp {
             + StringHelper.ucFirst(controllerId) + 'Controller';
 
         return Fate.createObjectAsString(clazz, {
+            application: this,
             moduleId: moduleId,
             controllerId: controllerId,
             viewPath: viewPath

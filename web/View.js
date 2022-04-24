@@ -1,5 +1,4 @@
 "use strict";
-const Fate = require("../Fate");
 const CoreView = require("../core/View");
 /**
  * web 视图
@@ -85,7 +84,9 @@ class View extends CoreView {
         this.getFileContent(file, (err, content) => {
             this.context.response.write(null === err
                 ? content
-                : (Fate.app.debug ? err.message : 'The view encountered an internal error'));
+                : (this.context.application.debug
+                    ? err.message
+                    : 'The view encountered an internal error'));
             this.context.response.end();
         });
     }
