@@ -1,3 +1,5 @@
+import AbstractCache = require('./AbstractCache');
+
 import Fate = require('../Fate');
 import InvalidConfigException = require('../core/InvalidConfigException');
 
@@ -6,17 +8,12 @@ import InvalidConfigException = require('../core/InvalidConfigException');
  */
 class Cache {
 
-    /**
-     * @type {Map<String, any>}
-     */
-    static _instances: Map<string, any> = new Map();
+    static _instances: Map<string, AbstractCache> = new Map();
 
     /**
-     * @typedef {import('./AbstractCache')} AbstractCache
-     * @return {AbstractCache}
-     * @throws {InvalidConfigException}
+     * 获取缓存实例
      */
-    static getCache(type: string): any {
+    static getCache(type: string): AbstractCache {
         let app = Fate.app;
 
         if(undefined === app.cache || undefined === app.cache[type]) {
@@ -27,7 +24,7 @@ class Cache {
         }
 
         if(!Cache._instances.has(type)) {
-            Cache._instances.set(type, Fate.createObjectAsDefinition(app.cache[type]));
+            Cache._instances.set(type, Fate.createObjectAsDefinition(app.cache[type], app));
             Cache._instances.get(type).init();
         }
 

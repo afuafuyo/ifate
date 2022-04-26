@@ -6,9 +6,7 @@ const InvalidConfigException = require("../core/InvalidConfigException");
  */
 class Cache {
     /**
-     * @typedef {import('./AbstractCache')} AbstractCache
-     * @return {AbstractCache}
-     * @throws {InvalidConfigException}
+     * 获取缓存实例
      */
     static getCache(type) {
         let app = Fate.app;
@@ -19,14 +17,11 @@ class Cache {
             throw new InvalidConfigException('The "classPath" configuration of the cache is missing');
         }
         if (!Cache._instances.has(type)) {
-            Cache._instances.set(type, Fate.createObjectAsDefinition(app.cache[type]));
+            Cache._instances.set(type, Fate.createObjectAsDefinition(app.cache[type], app));
             Cache._instances.get(type).init();
         }
         return Cache._instances.get(type);
     }
 }
-/**
- * @type {Map<String, any>}
- */
 Cache._instances = new Map();
 module.exports = Cache;

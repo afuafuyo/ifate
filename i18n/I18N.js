@@ -7,7 +7,7 @@ const InvalidConfigException = require("../core/InvalidConfigException");
  * ```
  * translator: {
  *      [type]: {
- *          classPath: 'fate/i18n/Translator',
+ *          classPath: 'fate/i18n/file/Translator',
  *          basePath: __dirname + '/app/messages'
  *      }
  * }
@@ -57,7 +57,7 @@ class I18N {
         if (undefined === app.translator[type].classPath) {
             throw new InvalidConfigException('The "classPath" configuration of the translator is missing');
         }
-        this.translators.set(type, Fate.createObjectAsDefinition(app.translator[type]));
+        this.translators.set(type, Fate.createObjectAsDefinition(app.translator[type], app));
         return this.translators.get(type);
     }
 }

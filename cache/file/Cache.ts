@@ -29,8 +29,8 @@ class Cache extends AbstractCache {
      */
     public cachePath: string = Fate.getPathAlias('@runtime/caches');
 
-    constructor() {
-        super();
+    constructor(application) {
+        super(application);
     }
 
     private getCacheFile(key: string): string {
@@ -50,7 +50,7 @@ class Cache extends AbstractCache {
             FileHelper.createDirectorySync(this.cachePath);
         }
 
-        fs.writeFileSync(cacheFile, value, Fate.app.encoding);
+        fs.writeFileSync(cacheFile, value, this.application.encoding);
 
         fs.utimesSync(cacheFile, life, life);
     }
@@ -66,7 +66,7 @@ class Cache extends AbstractCache {
             // 检查目录
             fs.access(this.cachePath, fs.constants.R_OK | fs.constants.W_OK, (error) => {
                 if(null === error) {
-                    fs.writeFile(cacheFile, value, Fate.app.encoding, (err) => {
+                    fs.writeFile(cacheFile, value, this.application.encoding, (err) => {
                         if(null !== err) {
                             reject(err);
                             return;
@@ -81,7 +81,7 @@ class Cache extends AbstractCache {
                 }
 
                 FileHelper.createDirectory(this.cachePath, 0o777, () => {
-                    fs.writeFile(cacheFile, value, Fate.app.encoding, (err) => {
+                    fs.writeFile(cacheFile, value, this.application.encoding, (err) => {
                         if(null !== err) {
                             reject(err);
                             return;
@@ -104,7 +104,7 @@ class Cache extends AbstractCache {
         let cacheFile = this.getCacheFile(key);
 
         if(fs.existsSync(cacheFile) && fs.statSync(cacheFile).mtime.getTime() > Date.now()) {
-            ret = fs.readFileSync(cacheFile, Fate.app.encoding);
+            ret = fs.readFileSync(cacheFile, this.application.encoding);
         }
 
         return ret;
@@ -128,7 +128,7 @@ class Cache extends AbstractCache {
                     return;
                 }
 
-                fs.readFile(cacheFile, Fate.app.encoding, (err, data) => {
+                fs.readFile(cacheFile, this.application.encoding, (err, data) => {
                     if(null !== err) {
                         reject(err);
                         return;

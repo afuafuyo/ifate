@@ -1,5 +1,6 @@
+import AbstractTranslator = require('./AbstractTranslator');
+
 import Fate = require('../Fate');
-import Translator = require('./Translator');
 import InvalidConfigException = require('../core/InvalidConfigException');
 
 /**
@@ -8,7 +9,7 @@ import InvalidConfigException = require('../core/InvalidConfigException');
  * ```
  * translator: {
  *      [type]: {
- *          classPath: 'fate/i18n/Translator',
+ *          classPath: 'fate/i18n/file/Translator',
  *          basePath: __dirname + '/app/messages'
  *      }
  * }
@@ -22,7 +23,7 @@ class I18N {
     /**
      * 翻译器
      */
-    public translators: Map<string, Translator> = new Map();
+    public translators: Map<string, AbstractTranslator> = new Map();
 
     private constructor() {}
 
@@ -55,7 +56,7 @@ class I18N {
      *
      * @param {String} type
      */
-    public getTranslator(type: string): Translator {
+    public getTranslator(type: string): AbstractTranslator {
         if(this.translators.has(type)) {
             return this.translators.get(type);
         }
@@ -68,7 +69,7 @@ class I18N {
             throw new InvalidConfigException('The "classPath" configuration of the translator is missing');
         }
 
-        this.translators.set(type, Fate.createObjectAsDefinition(app.translator[type]));
+        this.translators.set(type, Fate.createObjectAsDefinition(app.translator[type], app));
 
         return this.translators.get(type);
     }

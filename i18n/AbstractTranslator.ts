@@ -1,7 +1,5 @@
 import ITranslator from './ITranslator';
 
-import Fate = require('../Fate');
-
 /**
  * 抽象层
  */
@@ -17,7 +15,14 @@ class AbstractTranslator implements ITranslator {
      */
     public basePath: string = '';
 
-    constructor() {}
+    /**
+     * 应用
+     */
+    public application: any;
+
+    constructor(application) {
+        this.application = application;
+    }
 
     /**
      * 设置语言
@@ -78,18 +83,6 @@ class AbstractTranslator implements ITranslator {
         }
 
         return targetMessage;
-    }
-
-    /**
-     * 从文件系统加载语言
-     *
-     * @param {String} type 消息类型
-     */
-    public loadLanguageFromFile(type: string): any {
-        let file = this.basePath + '/' + this.language + '/' + type;
-        let lang = Fate.include(file, false);
-
-        return lang;
     }
 
 }

@@ -57,8 +57,15 @@ class Logger {
      */
     public targets: any[] = [];
 
-    private constructor(settings: any) {
-        this.init(settings);
+    /**
+     * 应用
+     */
+    public application: any;
+
+    private constructor(application: any) {
+        this.application = application;
+
+        this.init(application.log);
     }
 
     private init(settings: any) {
@@ -77,7 +84,7 @@ class Logger {
 
         for(let target in settings.targets) {
             if(undefined !== settings.targets[target].classPath) {
-                let instance = Fate.createObjectAsDefinition(settings.targets[target]);
+                let instance = Fate.createObjectAsDefinition(settings.targets[target], this.application);
                 instance.on(AbstractLog.EVENT_FLUSH, instance);
 
                 this.targets.push(instance);
@@ -94,7 +101,7 @@ class Logger {
         let app: any = Fate.app;
 
         if(null === Logger._instance) {
-            Logger._instance = new Logger(app.log);
+            Logger._instance = new Logger(app);
         }
 
         return Logger._instance;
@@ -159,7 +166,7 @@ class Logger {
      * @param {String} message the message to be logged
      */
     public trace(message: string): void {
-        if(Fate.app.debug) {
+        if(this.application.debug) {
             this.log(message, Logger.LEVEL_TRACE);
         }
     }
