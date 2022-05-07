@@ -50,7 +50,7 @@ abstract class Application extends Event {
             delete config.runtimePath;
 
         } else {
-            // set "app/runtime"
+            // set as "app/runtime"
             this.setRuntimePath(this.getAppPath() + '/runtime');
         }
     }

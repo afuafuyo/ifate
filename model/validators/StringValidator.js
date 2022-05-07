@@ -1,5 +1,5 @@
-import Validator = require('./Validator');
-
+"use strict";
+const Validator = require("../Validator");
 /**
  * 校验字符串
  *
@@ -23,36 +23,28 @@ import Validator = require('./Validator');
  *
  */
 class StringValidator extends Validator {
-
-    /**
-     * 最小长度
-     */
-    public minLength: number = 1;
-
-    /**
-     * 最大长度
-     */
-    public maxLength: number = 2333;
-
     constructor() {
         super();
+        /**
+         * 最小长度
+         */
+        this.minLength = 1;
+        /**
+         * 最大长度
+         */
+        this.maxLength = 2333;
     }
-
     /**
      * @inheritdoc
      */
-    public validate(attributeName: string, attributeValue: any): string {
+    validate(attributeName, attributeValue) {
         let info = this.getMessage(attributeName);
-
-        if(attributeValue.length < this.minLength || attributeValue.length > this.maxLength) {
+        if (attributeValue.length < this.minLength || attributeValue.length > this.maxLength) {
             return '' === info
-                ? 'length of the '+ attributeName +' should be between '+ this.minLength +' and '+ this.maxLength
+                ? 'length of the ' + attributeName + ' should be between ' + this.minLength + ' and ' + this.maxLength
                 : info;
         }
-
         return '';
     }
-
 }
-
-export = StringValidator;
+module.exports = StringValidator;

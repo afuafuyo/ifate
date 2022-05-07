@@ -1,5 +1,5 @@
-import Validator = require('./Validator');
-
+"use strict";
+const Validator = require("../Validator");
 /**
  * 检查一个属性是不是空值 null undefined or 空字符串
  *
@@ -19,24 +19,17 @@ import Validator = require('./Validator');
  *
  */
 class RequiredValidator extends Validator {
-
     /**
      * @inheritdoc
      */
-    public validate(attributeName: string, attributeValue: any): string {
+    validate(attributeName, attributeValue) {
         let info = this.getMessage(attributeName);
-
-        if(
-            null === attributeValue
+        if (null === attributeValue
             || undefined === attributeValue
-            || '' === attributeValue
-        ) {
+            || '' === attributeValue) {
             return '' === info ? attributeName + ' is required' : info;
         }
-
         return '';
     }
-
 }
-
-export = RequiredValidator;
+module.exports = RequiredValidator;

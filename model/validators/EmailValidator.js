@@ -1,5 +1,5 @@
-import Validator = require('./Validator');
-
+"use strict";
+const Validator = require("../Validator");
 /**
  * 检查邮件地址是否合法
  *
@@ -19,29 +19,22 @@ import Validator = require('./Validator');
  *
  */
 class EmailValidator extends Validator {
-
-    /**
-     * 模式
-     */
-    public pattern: RegExp = /^[a-zA-Z0-9_\.\-]+\@(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9]{2,8}$/;
-
     constructor() {
         super();
+        /**
+         * 模式
+         */
+        this.pattern = /^[a-zA-Z0-9_\.\-]+\@(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9]{2,8}$/;
     }
-
     /**
      * @inheritdoc
      */
-    public validate(attributeName: string, attributeValue: any): string {
+    validate(attributeName, attributeValue) {
         let info = this.getMessage(attributeName);
-
-        if(!this.pattern.test(attributeValue)) {
+        if (!this.pattern.test(attributeValue)) {
             return '' === info ? attributeName + ' is invalid' : info;
         }
-
         return '';
     }
-
 }
-
-export = EmailValidator;
+module.exports = EmailValidator;
