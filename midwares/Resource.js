@@ -5,28 +5,21 @@ const Request = require("../http/Request");
  * 静态资源处理
  */
 class Resource {
-    /**
-     * constructor
-     *
-     * @param {String} directory 静态资源目录
-     * @param {any} options 配置参数
-     *
-     * {
-     *    mime: { ... },
-     *    cache: {regExp, maxAge}
-     * }
-     *
-     */
-    constructor(directory, options = {}) {
+    constructor(directory) {
         this.directory = directory;
-        this.options = options;
     }
     /**
      * 托管目录
      */
     static serve(directory, options = {}) {
         if (null === Resource.instance) {
-            Resource.instance = new Resource(directory, options);
+            if (undefined !== options.mime) {
+                Object.assign(Resource.mime, options.mime);
+            }
+            if (undefined !== options.cache) {
+                Object.assign(Resource.cache, options.cache);
+            }
+            Resource.instance = new Resource(directory);
         }
         return (req, res, next) => {
             Resource.instance.handler(req, res, next);
@@ -42,13 +35,10 @@ class Resource {
         let ret = false;
         let pathname = new Request(request).createURL().pathname;
         let ext = this.getExtName(pathname);
-        let mime = undefined === this.options.mime ?
-            Resource.mime :
-            Object.assign({}, Resource.mime, this.options.mime);
         if ('' === ext) {
             return false;
         }
-        for (let key in mime) {
+        for (let key in Resource.mime) {
             if (ext === key) {
                 ret = true;
                 break;
@@ -65,9 +55,7 @@ class Resource {
     getMimeType(pathName) {
         let ret = '';
         let ext = this.getExtName(pathName);
-        let mime = undefined === this.options.mime
-            ? Resource.mime
-            : Object.assign({}, Resource.mime, this.options.mime);
+        let mime = Resource.mime;
         for (let key in mime) {
             if (ext === key) {
                 ret = mime[key];
@@ -123,8 +111,7 @@ class Resource {
             response.setHeader('Last-Modified', stats.mtime.toUTCString());
             // 设置缓存
             let extName = '.' + this.getExtName(pathname);
-            let cacheConfig = undefined === this.options.cache ?
-                Resource.cache : this.options.cache;
+            let cacheConfig = Resource.cache;
             if (cacheConfig.regExp.test(extName)) {
                 response.setHeader('Expires', new Date(Date.now() + cacheConfig.maxAge).toUTCString());
                 response.setHeader('Cache-Control', 'max-age=' + cacheConfig.maxAge / 1000);
@@ -156,8 +143,11 @@ Resource.mime = {
     'png': 'image/png',
     'jpg': 'image/jpeg',
     'jpeg': 'image/jpeg',
+    'webp': 'image/webp',
     'svg': 'image/svg+xml',
     'tiff': 'image/tiff',
+    'mp3': 'audio/mpeg',
+    'mpeg': 'video/mpeg',
     'swf': 'application/x-shockwave-flash'
 };
 /**
@@ -166,7 +156,7 @@ Resource.mime = {
 Resource.cache = {
     // 那些资源需要缓存
     'regExp': /(\.gif|\.jpg|\.jpeg|\.png|\.js|\.css)$/ig,
-    // 缓存时间毫秒
-    'maxAge': 1000 * 3600 * 24 * 30
+    // 缓存时间毫秒 默认 30 天 = 1000 * 3600 * 24 * 30
+    'maxAge': 2592000000
 };
 module.exports = Resource;
