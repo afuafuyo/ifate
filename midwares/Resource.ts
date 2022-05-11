@@ -8,6 +8,11 @@ import Request = require('../http/Request');
 class Resource {
 
     /**
+     * 实例
+     */
+    private static instance: Resource = null;
+
+    /**
      * MimeType
      */
     static mime = {
@@ -36,13 +41,13 @@ class Resource {
         'maxAge': 1000 * 3600 * 24 * 30
     };
 
-    public root: string;
+    public directory: string;
     public options: any;
 
     /**
      * constructor
      *
-     * @param {String} root 静态资源目录
+     * @param {String} directory 静态资源目录
      * @param {any} options 配置参数
      *
      * {
@@ -51,18 +56,22 @@ class Resource {
      * }
      *
      */
-    constructor(root: string, options: any = {}) {
-        this.root = root;
+    constructor(directory: string, options: any = {}) {
+        this.directory = directory;
         this.options = options;
     }
 
     /**
-     * 入口
-     *
-     * @return {any} 中间件
+     * 托管目录
      */
-    public serve(): any {
-        return this.handler.bind(this);
+    static serve(directory: string, options: any = {}) {
+        if(null === Resource.instance) {
+            Resource.instance = new Resource(directory, options);
+        }
+
+        return (req, res, next) => {
+            Resource.instance.handler(req, res, next);
+        };
     }
 
     /**
@@ -148,7 +157,7 @@ class Resource {
         let pathname = new Request(request).createURL().pathname;
         let mimeType = this.getMimeType(pathname);
 
-        pathname = (this.root + pathname).replace(/\.\./g, '');
+        pathname = (this.directory + pathname).replace(/\.\./g, '');
         while(pathname.indexOf('//') >= 0) {
             pathname = pathname.replace('//', '/');
         }

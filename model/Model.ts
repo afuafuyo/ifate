@@ -56,10 +56,11 @@ class Model extends Component {
      * ```
      * [
      *      {
-     *          // 必选参数
+     *          // 验证器
      *          rule: 'fate/model/RequiredValidator',
+     *          // 待验证的属性
      *          attributes: ['name', 'age'],
-     *          // 可选参数 错误信息
+     *          // 错误信息
      *          messages: ['name is required', 'age is required']
      *      }
      * ]

@@ -8,7 +8,7 @@ const Validator = require("../Validator");
  *      rules() {
  *          return [
  *              {
- *                  rule: 'fate/model/EqualValidator',
+ *                  rule: 'fate/model/validators/EqualValidator',
  *                  attributes: ['password', 'confirming'],
  *                  messages: ['password error']
  *              }

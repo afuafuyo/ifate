@@ -8,7 +8,7 @@ const Validator = require("../Validator");
  *      rules() {
  *          return [
  *              {
- *                  rule: 'fate/model/RequiredValidator',
+ *                  rule: 'fate/model/validators/RequiredValidator',
  *                  attributes: ['name', 'email'],
  *                  messages: ['name is required', 'email is required']
  *              }
@@ -24,9 +24,9 @@ class RequiredValidator extends Validator {
      */
     validate(attributeName, attributeValue) {
         let info = this.getMessage(attributeName);
-        if (null === attributeValue
-            || undefined === attributeValue
-            || '' === attributeValue) {
+        if (undefined === attributeValue
+            || '' === attributeValue
+            || null === attributeValue) {
             return '' === info ? attributeName + ' is required' : info;
         }
         return '';

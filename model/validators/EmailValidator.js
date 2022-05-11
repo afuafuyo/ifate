@@ -8,7 +8,7 @@ const Validator = require("../Validator");
  *      rules() {
  *          return [
  *              {
- *                  rule: 'fate/model/EmailValidator',
+ *                  rule: 'fate/model/validators/EmailValidator',
  *                  attributes: ['user_email'],
  *                  messages: ['user email is invalid']
  *              }

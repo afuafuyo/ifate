@@ -50,7 +50,9 @@ class FateJs {
      * @return {http.Server}
      */
     public getServer(): http.Server {
-        return http.createServer(this.handler.bind(this));
+        return http.createServer((req, res) => {
+            this.handler(req, res);
+        });
     }
 
     /**

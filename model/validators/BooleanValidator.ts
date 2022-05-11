@@ -8,7 +8,7 @@ import Validator = require('../Validator');
  *      rules() {
  *          return [
  *              {
- *                  rule: 'fate/model/BooleanValidator',
+ *                  rule: 'fate/model/validators/BooleanValidator',
  *                  attributes: ['booleanAttr'],
  *                  messages: ['booleanAttr is invalid']
  *              }
