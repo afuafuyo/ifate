@@ -58,10 +58,10 @@ class Logger {
      */
     static getLogger() {
         let app = Fate.app;
-        if (null === Logger._instance) {
-            Logger._instance = new Logger(app);
+        if (null === Logger.instance) {
+            Logger.instance = new Logger(app);
         }
-        return Logger._instance;
+        return Logger.instance;
     }
     /**
      * 记录日志
@@ -149,7 +149,7 @@ class Logger {
 /**
  * Logger instance
  */
-Logger._instance = null;
+Logger.instance = null;
 /**
  * Error message level
  */
