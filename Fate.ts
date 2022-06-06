@@ -98,9 +98,7 @@ class Fate {
      * @param {any} parameters 构造函数参数
      */
     static createObjectAsString(classPath: string, ...parameters: any[]): any {
-        let realClass = Fate.getPathAlias('@' + classPath);
-
-        let ClassName = require(realClass + Fate.defaultExtension);
+        let ClassName = Fate.include(classPath, true);
 
         return new ClassName(...parameters);
     }
@@ -112,10 +110,9 @@ class Fate {
      * @param {any} parameters 构造函数参数
      */
     static createObjectAsDefinition(definition: any, ...parameters: any[]): any {
-        let realClass = Fate.getPathAlias('@' + definition.classPath);
         let properties = Fate.configure({}, definition);
 
-        let ClassName = require(realClass + Fate.defaultExtension);
+        let ClassName = Fate.include(definition.classPath, true);
         let instance = new ClassName(...parameters);
 
         delete properties.classPath;
