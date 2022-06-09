@@ -1,34 +1,10 @@
 "use strict";
 const Validator = require("../Validator");
-/**
- * 检查邮件地址是否合法
- *
- * ```
- * class XxxModel extends Model {
- *      rules() {
- *          return [
- *              {
- *                  rule: 'fate/model/validators/EmailValidator',
- *                  attributes: ['user_email'],
- *                  messages: ['user email is invalid']
- *              }
- *          ];
- *      }
- * }
- * ```
- *
- */
 class EmailValidator extends Validator {
     constructor() {
         super();
-        /**
-         * 模式
-         */
         this.pattern = /^[a-zA-Z0-9_\.\-]+\@(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9]{2,8}$/;
     }
-    /**
-     * @inheritdoc
-     */
     validate(attributeName, attributeValue) {
         let info = this.getMessage(attributeName);
         if (!this.pattern.test(attributeValue)) {

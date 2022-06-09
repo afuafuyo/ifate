@@ -1,13 +1,7 @@
 "use strict";
 const Fate = require("../Fate");
 const InvalidConfigException = require("../core/InvalidConfigException");
-/**
- * 缓存入口
- */
 class Cache {
-    /**
-     * 获取缓存实例
-     */
     static getCache(type) {
         let app = Fate.app;
         if (undefined === app.cache || undefined === app.cache[type]) {
@@ -23,8 +17,5 @@ class Cache {
         return Cache.instances.get(type);
     }
 }
-/**
- * 实例
- */
 Cache.instances = new Map();
 module.exports = Cache;

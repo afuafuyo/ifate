@@ -1,28 +1,17 @@
 "use strict";
 const Fate = require("../../Fate");
 const AbstractTranslator = require("../AbstractTranslator");
-/**
- * 翻译器
- */
 class Translator extends AbstractTranslator {
     constructor(application) {
         super(application);
         this.language = 'en-US';
         this.basePath = Fate.getPathAlias('@app/i18n');
     }
-    /**
-     * 从文件系统加载语言
-     *
-     * @param {String} type 消息类型
-     */
     loadLanguageFromFile(type) {
         let file = this.basePath + '/' + this.language + '/' + type;
         let lang = Fate.include(file, false);
         return lang;
     }
-    /**
-     * @inheritdoc
-     */
     translate(type, sourceMessage, parameters = null) {
         let lang = this.loadLanguageFromFile(type);
         if (undefined === lang[sourceMessage]) {

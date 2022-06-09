@@ -48,7 +48,7 @@ new IFate(app).listen(8090, function(){
 
 ### 系统内置别名
 
-+ @fate  系统目录
++ @fate  框架目录
 
 + @app  项目目录 由 appPath 指定 `Fate.app.getAppPath()` 可得到该值
 
