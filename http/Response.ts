@@ -1,4 +1,3 @@
-import Fate = require('../Fate');
 import CoreResponse = require('../core/Response');
 import Cookie = require('./Cookie');
 import Headers = require('./Headers');

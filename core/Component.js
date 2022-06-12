@@ -2,70 +2,26 @@
 const Fate = require("../Fate");
 const Event = require("./Event");
 const Behavior = require("./Behavior");
-/**
- * 组件是实现 行为 (behavior) 事件 (event) 的基类
- */
 class Component extends Event {
     constructor() {
         super();
-        /**
-         * the attached behaviors
-         *
-         * {
-         *     'behaviorName1': instance1,
-         *     'behaviorNameN': instanceN
-         * }
-         */
         this.behaviorsMap = new Map();
         this.ensureDeclaredBehaviorsAttached();
     }
-    /**
-     * 获取类名称
-     *
-     * @return {String}
-     */
     className() {
         return this.constructor.name;
     }
-    /**
-     * 声明组件的行为列表
-     *
-     * [
-     *      ['behaviorName', instanceClass],
-     *      ['behaviorName', 'behaviorClassPath'],
-     *      ['behaviorName', {'classPath': 'behaviorClassPath'}]
-     * ]
-     *
-     * @return {any[]} 行为列表
-     */
     behaviors() {
         return null;
     }
-    /**
-     * 向组件附加一个行为
-     *
-     * @param {String} name 行为名称
-     * @param {any} behavior 行为
-     */
     attachBehavior(name, behavior) {
         this.attachBehaviorInternal(name, behavior);
     }
-    /**
-     * 以列表形式向组件添加行为
-     *
-     * @param {any[]} behaviors 行为列表
-     */
     attachBehaviors(behaviors) {
         for (let v of behaviors) {
             this.attachBehavior(v[0], v[1]);
         }
     }
-    /**
-     * 删除组件的行为
-     *
-     * @param {String} name 行为的名称
-     * @return {Behavior | null} 被删除的行为
-     */
     detachBehavior(name) {
         if (!this.behaviorsMap.has(name)) {
             return null;
@@ -75,17 +31,11 @@ class Component extends Event {
         behavior.unListen();
         return behavior;
     }
-    /**
-     * 删除组件上所有的行为
-     */
     detachBehaviors() {
         for (let name of this.behaviorsMap.keys()) {
             this.detachBehavior(name);
         }
     }
-    /**
-     * 确保 behaviors() 声明的行为已保存到组件
-     */
     ensureDeclaredBehaviorsAttached() {
         let behaviors = this.behaviors();
         if (null === behaviors) {
@@ -95,12 +45,6 @@ class Component extends Event {
             this.attachBehaviorInternal(v[0], v[1]);
         }
     }
-    /**
-     * 保存行为类到组件
-     *
-     * @param {String} name 行为的名称
-     * @param {any} behavior 行为配置
-     */
     attachBehaviorInternal(name, behavior) {
         if (!(behavior instanceof Behavior)) {
             behavior = Fate.createObject(behavior);
@@ -108,7 +52,6 @@ class Component extends Event {
         if (this.behaviorsMap.has(name)) {
             this.behaviorsMap.get(name).unListen();
         }
-        // 行为类可以监听组件的事件并处理
         behavior.listen(this);
         this.behaviorsMap.set(name, behavior);
     }
