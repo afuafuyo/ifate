@@ -81,7 +81,7 @@ abstract class AbstractTranslator implements ITranslator {
     /**
      * @inheritdoc
      */
-    public translate(type: string, sourceMessage: string, parameters?: any[]): string;
+    public abstract translate(type: string, sourceMessage: string, parameters?: any[]): string;
 
 }
 
