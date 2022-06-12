@@ -3,7 +3,7 @@ import ITranslator from './ITranslator';
 /**
  * 抽象层
  */
-class AbstractTranslator implements ITranslator {
+abstract class AbstractTranslator implements ITranslator {
 
     /**
      * 语言
@@ -53,13 +53,6 @@ class AbstractTranslator implements ITranslator {
     }
 
     /**
-     * @inheritdoc
-     */
-    public translate(type: string, sourceMessage: string, parameters: any[] = null): string {
-        return '';
-    }
-
-    /**
      * 解析消息中的参数
      *
      * ```
@@ -84,6 +77,11 @@ class AbstractTranslator implements ITranslator {
 
         return targetMessage;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public translate(type: string, sourceMessage: string, parameters?: any[]): string;
 
 }
 
