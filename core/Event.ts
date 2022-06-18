@@ -13,7 +13,7 @@ class Event {
      *      'eventName2': [fn1, fn2]
      * }
      */
-    public eventsMap: Map<string, LinkedList> = new Map();
+    public eventsMap: Map<string, LinkedList<any>> = new Map();
 
     constructor() {}
 
