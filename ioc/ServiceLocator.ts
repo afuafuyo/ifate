@@ -23,8 +23,14 @@ import InvalidConfigException = require('../core/InvalidConfigException');
  */
 class ServiceLocator {
 
-    public services: Map<string, string> = new Map();
+    /**
+     * service 缓存
+     */
+    public services: Map<string, any> = new Map();
 
+    /**
+     * 服务配置
+     */
     public definitions: Map<string, any> = new Map();
 
     /**
@@ -63,7 +69,7 @@ class ServiceLocator {
             }
 
             if(undefined === definition[key].classPath) {
-                throw new InvalidConfigException('The "classPath" configuration of the service is missing');
+                throw new InvalidConfigException('The "classPath" configuration of the "' + key + '" service is missing');
             }
 
             this.definitions.set(key, definition[key]);
@@ -92,10 +98,19 @@ class ServiceLocator {
         }
 
         if(this.definitions.has(key)) {
-            return Fate.createObject(this.definitions.get(key));
+            this.services.set(key, Fate.createObject(this.definitions.get(key)));
+            return this.services.get(key);
         }
 
         return null;
+    }
+
+    /**
+     * 清空服务
+     */
+    public clear(): void {
+        this.services.clear();
+        this.definitions.clear();
     }
 
 }
