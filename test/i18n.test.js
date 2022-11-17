@@ -12,7 +12,7 @@ const app = new App({
     'debug': true,
 
     'translator': {
-        'mytype': {
+        'fileBased': {
             classPath: 'fate/i18n/file/Translator',
             basePath: __dirname + '/app/i18n'
         }
@@ -53,7 +53,7 @@ describe('I18N', () => {
             .end((err, res) => {
                 if (err) return done(err);
 
-                assert.equal(res.text.trim(), 'hello world123');
+                assert.equal(res.text.trim(), 'hello world 123');
 
                 done();
             });

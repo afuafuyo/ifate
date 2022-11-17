@@ -9,10 +9,12 @@ class IndexController {
         let q = new Request(req);
         let param = q.getQueryString('param', '');
         let lang = q.getQueryString('lang', '');
-        // 设置语言可以用过滤器方式添加 代码复用性更高
-        I18N.getI18N().getTranslator('mytype').setLanguage(lang === 'en' ? 'en-US' : 'zh-CN');
 
-        let msg = I18N.getI18N().translate('mytype', 'hello world{param}', [param]);
+        // 设置语言可以用过滤器方式添加 代码复用性更高
+        let t = I18N.getTranslator('fileBased');
+        t.setLanguage(lang === 'en' ? 'en-US' : 'zh-CN');
+
+        let msg = t.translate('mytype', 'title', [param]);
         res.end(msg);
     }
 
